@@ -1,0 +1,773 @@
+================================================================================
+                        BLUEPRINT APLIKASI PAYFLOW
+                    Aplikasi Pembayaran Digital Mobile
+================================================================================
+
+📋 INFORMASI UMUM
+================================================================================
+Nama Aplikasi   : PayFlow
+Versi           : 1.0.0
+Platform        : Android, iOS, Web, Windows, Linux, macOS (Flutter)
+Bahasa          : Dart (Flutter Framework)
+SDK             : ^3.11.5
+Tagline         : "Pembayaran Cepat & Aman"
+Target User     : Pengguna umum yang membutuhkan layanan pembayaran digital
+
+
+================================================================================
+🎨 DESIGN SYSTEM
+================================================================================
+
+1. TEMA & WARNA
+   - Mode             : Dark Mode
+   - Background Utama : #0A0E21 (Deep Navy)
+   - Surface/Card     : #1D1F33 (Dark Grey-Blue)
+   - Primary Color    : #6C63FF (Purple/Violet)
+   - Secondary Color  : #00D9FF (Cyan/Aqua)
+   - Danger/Error     : #FF6B6B (Coral Red)
+   - Success          : #4CAF50 (Green)
+   - Warning          : #FFA726 (Orange)
+   - Info             : #42A5F5 (Light Blue)
+
+2. TIPOGRAFI
+   - Font Family      : Roboto
+   - Heading          : Bold, 20-36px
+   - Body             : Regular/Medium, 12-16px
+   - Caption          : 10-12px, White54/White38
+
+3. KOMPONEN UI
+   - Border Radius    : 12-24px (rounded modern)
+   - Card Shadow      : Colored glow shadows (branded)
+   - Gradient         : Linear gradient (Purple → Cyan / Purple → Dark Purple)
+   - Animasi          : Fade, Scale, Slide, Pulse transitions
+   - Status Bar       : Transparent, icon brightness light
+
+
+================================================================================
+📱 ARSITEKTUR HALAMAN (SCREEN FLOW)
+================================================================================
+
+┌─────────────┐     ┌─────────────┐     ┌──────────────────┐
+│   Splash    │────▶│    Login     │────▶│  Main Navigation │
+│   Screen    │     │    Page      │     │  (Bottom Nav)    │
+└─────────────┘     └─────────────┘     └──────────────────┘
+                                               │
+                          ┌────────────────────┼────────────────────┐
+                          ▼                    ▼                    ▼
+                    ┌───────────┐      ┌─────────────┐      ┌───────────┐
+                    │   Home    │      │   History    │      │  Profile  │
+                    │   Page    │      │    Page      │      │   Page    │
+                    └───────────┘      └─────────────┘      └───────────┘
+                          │
+                ┌─────────┼─────────┐
+                ▼                   ▼
+          ┌───────────┐      ┌───────────┐
+          │ Transfer  │      │  Top Up   │
+          │   Page    │      │   Page    │
+          └───────────┘      └───────────┘
+
+
+================================================================================
+📄 DETAIL SETIAP HALAMAN
+================================================================================
+
+──────────────────────────────────────────────────────────────────────────────
+1. SPLASH SCREEN (splash_screen.dart)
+──────────────────────────────────────────────────────────────────────────────
+   Tujuan    : Tampilan pembuka saat aplikasi pertama dibuka
+   Durasi    : ~3.6 detik total sebelum navigasi ke Login
+
+   Komponen:
+   - Background gradient (Deep Navy → Dark Purple → Deep Navy)
+   - Efek glow lingkaran (Purple & Cyan) di pojok atas-kanan & bawah-kiri
+   - Logo ikon wallet dengan gradient (Purple → Cyan)
+   - Teks "PayFlow" dengan efek ShaderMask gradient
+   - Subtitle "Pembayaran Cepat & Aman"
+   - Linear progress indicator
+   - Teks versi "v1.0.0" di bagian bawah
+
+   Animasi:
+   - Logo: Scale (elasticOut) + Opacity fade-in (1200ms)
+   - Teks: Fade-in + slide up (800ms, delay 800ms)
+   - Pulse: Logo berdenyut 1.0 → 1.08 (1500ms, loop)
+   - Transisi ke Login: FadeTransition (800ms)
+
+──────────────────────────────────────────────────────────────────────────────
+2. LOGIN PAGE (login_page.dart)
+──────────────────────────────────────────────────────────────────────────────
+   Tujuan    : Autentikasi pengguna sebelum masuk aplikasi
+
+   Komponen:
+   - Logo wallet kecil (80x80) dengan gradient & shadow
+   - Teks "Selamat Datang" dengan ShaderMask gradient
+   - Subtitle "Masuk ke akun PayFlow kamu"
+   - Input Email (dengan ikon email, hint "contoh@email.com")
+   - Input Password (dengan toggle visibility, hint "••••••••")
+   - Link "Lupa Password?" (belum aktif)
+   - Tombol "Masuk" (Purple, full-width, loading indicator)
+   - Divider "atau"
+   - Social Login: Google & Facebook (belum aktif)
+   - Link "Belum punya akun? Daftar" (belum aktif)
+
+   Animasi:
+   - Fade-in + Slide-up seluruh form (1000ms, easeOut)
+   - Loading spinner saat proses login (1500ms delay simulasi)
+   - FadeTransition ke MainNavigation
+
+   Validasi:
+   - Cek email & password tidak kosong
+   - Snackbar error jika kosong (Coral Red)
+
+──────────────────────────────────────────────────────────────────────────────
+3. MAIN NAVIGATION (main.dart)
+──────────────────────────────────────────────────────────────────────────────
+   Tujuan    : Container utama dengan bottom navigation
+
+   Komponen:
+   - Bottom Navigation Bar dengan 3 tab:
+     • Home (icon: home_rounded)
+     • History (icon: history_rounded)
+     • Profile (icon: person_rounded)
+   - Warna aktif: #6C63FF (Purple)
+   - Warna tidak aktif: White38
+   - Shadow glow pada navigation bar
+
+──────────────────────────────────────────────────────────────────────────────
+4. HOME PAGE (home_page.dart)
+──────────────────────────────────────────────────────────────────────────────
+   Tujuan    : Dashboard utama pengguna
+
+   Komponen:
+   A. Header
+      - Greeting: "Selamat Datang 👋"
+      - Nama user: "Salman" (hardcoded)
+      - Tombol notifikasi (pojok kanan atas)
+
+   B. Kartu Saldo (Balance Card)
+      - Gradient Purple → Dark Purple
+      - Label "Saldo Anda"
+      - Badge "PayFlow" dengan ikon wallet
+      - Saldo: "Rp 2.450.000" (hardcoded)
+      - Nomor kartu tersamar: "**** **** **** 8294"
+      - Shadow glow purple
+
+   C. Layanan (Quick Actions) - 4 tombol grid:
+      - Transfer (Purple) → navigasi ke TransferPage
+      - Top Up (Cyan) → navigasi ke TopUpPage
+      - Tagihan (Coral Red) → Snackbar "segera hadir"
+      - Lainnya (Orange) → Snackbar "segera hadir"
+
+   D. Promo Spesial 🔥
+      - Cashback 20% (Cyan): Transfer cashback hingga Rp 50.000
+      - Gratis Top Up (Coral Red): Tanpa biaya admin 3 transaksi pertama
+
+   E. Transaksi Terakhir
+      - Header + tombol "Lihat Semua"
+      - 3 item transaksi terakhir (hardcoded):
+        • Transfer ke Andi: -Rp 150.000 (Hari ini)
+        • Top Up Saldo: +Rp 500.000 (Kemarin)
+        • Bayar Listrik: -Rp 230.000 (27 Apr)
+
+──────────────────────────────────────────────────────────────────────────────
+5. TRANSFER PAGE (transfer_page.dart)
+──────────────────────────────────────────────────────────────────────────────
+   Tujuan    : Mengirim uang ke kontak lain
+
+   Komponen:
+   A. Pilih Penerima (daftar kontak hardcoded):
+      - Andi Pratama (0812-3456-7890)
+      - Budi Santoso (0856-1234-5678)
+      - Citra Dewi (0878-9012-3456)
+      - Dina Safitri (0813-5678-9012)
+      - Seleksi dengan border purple + check icon
+
+   B. Nominal Transfer
+      - Input angka dengan prefix "Rp"
+      - Quick amount chips: 50.000 / 100.000 / 200.000 / 500.000
+
+   C. Catatan (Opsional)
+      - Text field untuk pesan tambahan
+
+   D. Tombol "Transfer Sekarang" (Purple, full-width)
+
+   Flow Konfirmasi:
+   1. Validasi: penerima & nominal harus terisi
+   2. Dialog konfirmasi: tampilkan detail (penerima, nominal, catatan)
+   3. Tombol "Batal" / "Konfirmasi"
+   4. Dialog sukses: ikon check hijau + pesan "Transfer Berhasil! 🎉"
+   5. Tombol "Kembali ke Home"
+
+──────────────────────────────────────────────────────────────────────────────
+6. TOP UP PAGE (topup_page.dart)
+──────────────────────────────────────────────────────────────────────────────
+   Tujuan    : Mengisi saldo PayFlow
+
+   Komponen:
+   A. Masukkan Nominal
+      - Input angka dengan prefix "Rp" (warna Cyan)
+      - Quick amount chips: 50.000 / 100.000 / 250.000 / 500.000 / 1.000.000
+
+   B. Metode Pembayaran (6 pilihan):
+      Virtual Account:
+      - BCA (#1A56DB)
+      - BNI (#FF6B2B)
+      - BRI (#0066B3)
+      E-Wallet:
+      - GoPay (#00AED6)
+      - OVO (#4C3494)
+      - DANA (#108EE9)
+      - Seleksi dengan border cyan + check icon
+
+   C. Tombol "Top Up Sekarang" (Cyan, full-width)
+
+   Flow:
+   1. Validasi: nominal & metode harus terisi
+   2. Dialog sukses langsung: ikon check hijau + "Top Up Berhasil! 🎉"
+   3. Tombol "Kembali ke Home"
+
+──────────────────────────────────────────────────────────────────────────────
+7. HISTORY PAGE (history_page.dart)
+──────────────────────────────────────────────────────────────────────────────
+   Tujuan    : Menampilkan riwayat semua transaksi
+
+   Komponen:
+   A. Header
+      - Judul "Riwayat Transaksi"
+      - Subtitle: jumlah transaksi
+
+   B. Summary Cards (2 kolom):
+      - Pemasukan: +Rp 1.750.000 (hijau)
+      - Pengeluaran: -Rp 1.590.000 (merah)
+
+   C. Daftar Transaksi (10 item hardcoded):
+      Setiap item menampilkan:
+      - Ikon dengan warna sesuai tipe
+      - Judul transaksi
+      - Badge tipe (Transfer/Top Up/Tagihan)
+      - Tanggal & waktu
+      - Nominal (warna sesuai: hijau masuk, merah keluar)
+
+──────────────────────────────────────────────────────────────────────────────
+8. PROFILE PAGE (profile_page.dart)
+──────────────────────────────────────────────────────────────────────────────
+   Tujuan    : Informasi dan pengaturan akun pengguna
+
+   Komponen:
+   A. Avatar
+      - Circle avatar "S" dengan gradient border (Purple → Cyan)
+      - Shadow glow
+
+   B. Info User
+      - Nama: "Salman"
+      - Email: "salman@email.com"
+      - Badge: "Premium Member" (verified icon, purple)
+
+   C. Statistik (3 kolom):
+      - Transaksi: 128
+      - Bulan Ini: Rp 2.4jt
+      - Poin: 1.250
+
+   D. Menu Settings (5 item):
+      - Edit Profil (Purple)
+      - Keamanan (Cyan)
+      - Notifikasi (Orange)
+      - Bantuan (Green)
+      - Tentang Aplikasi (Blue)
+      (Semua belum aktif / belum ada navigasi)
+
+   E. Tombol Logout
+      - Outlined button merah "Keluar"
+      - Dialog konfirmasi: "Yakin ingin keluar dari akun?"
+      - Tombol "Batal" / "Keluar"
+
+   F. Footer: "PayFlow v1.0.0"
+
+
+================================================================================
+🆕 FITUR TAMBAHAN (HALAMAN BARU)
+================================================================================
+
+──────────────────────────────────────────────────────────────────────────────
+9. REGISTER PAGE (register_page.dart)
+──────────────────────────────────────────────────────────────────────────────
+   Tujuan    : Pendaftaran akun baru
+
+   Komponen:
+   - Input Nama Lengkap
+   - Input Email
+   - Input No. Handphone
+   - Input Password (dengan strength indicator)
+   - Input Konfirmasi Password
+   - Checkbox syarat & ketentuan
+   - Tombol "Daftar Sekarang"
+   - Link "Sudah punya akun? Masuk"
+
+──────────────────────────────────────────────────────────────────────────────
+10. PIN SECURITY PAGE (pin_page.dart)
+──────────────────────────────────────────────────────────────────────────────
+   Tujuan    : Verifikasi PIN 6 digit sebelum transaksi & saat buka app
+
+   Komponen:
+   - 6 dot indicator (terisi/kosong)
+   - Numpad kustom (1-9, 0, backspace)
+   - Tombol "Lupa PIN?"
+   - Animasi shake jika PIN salah
+   - Opsi fingerprint/face ID
+
+──────────────────────────────────────────────────────────────────────────────
+11. QR CODE PAGE (qr_page.dart)
+──────────────────────────────────────────────────────────────────────────────
+   Tujuan    : Bayar & terima pembayaran via QR Code
+
+   Komponen:
+   A. Tab "Scan QR"
+      - Kamera scanner dengan overlay frame
+      - Flash toggle
+      - Galeri (scan dari gambar)
+
+   B. Tab "QR Saya"
+      - QR Code unik pengguna
+      - Nominal custom (opsional)
+      - Tombol share & download QR
+      - Info: "Tunjukkan QR ini untuk menerima pembayaran"
+
+──────────────────────────────────────────────────────────────────────────────
+12. BILL PAYMENT PAGE (bill_page.dart)
+──────────────────────────────────────────────────────────────────────────────
+   Tujuan    : Pembayaran tagihan bulanan
+
+   Kategori Tagihan:
+   - ⚡ Listrik (PLN)
+   - 💧 PDAM / Air
+   - 🌐 Internet & WiFi
+   - 📱 Pulsa & Paket Data
+   - 📺 TV Kabel
+   - 🏥 BPJS Kesehatan
+   - 🎓 Pendidikan / SPP
+   - 🏠 Cicilan / Kredit
+
+   Flow:
+   1. Pilih kategori tagihan
+   2. Input nomor pelanggan / ID
+   3. Tampilkan detail tagihan (nama, periode, jumlah)
+   4. Konfirmasi & bayar
+   5. Struk digital (bisa di-share/download)
+
+──────────────────────────────────────────────────────────────────────────────
+13. E-WALLET PAGE (ewallet_page.dart)
+──────────────────────────────────────────────────────────────────────────────
+   Tujuan    : Isi saldo e-wallet lain dari PayFlow
+
+   E-Wallet Terdukung:
+   - GoPay, OVO, DANA, ShopeePay, LinkAja
+
+   Flow:
+   1. Pilih e-wallet tujuan
+   2. Input nomor HP tujuan
+   3. Input nominal
+   4. Konfirmasi & kirim
+   5. Status berhasil + detail
+
+──────────────────────────────────────────────────────────────────────────────
+14. SAVINGS PAGE (savings_page.dart)
+──────────────────────────────────────────────────────────────────────────────
+   Tujuan    : Fitur tabungan & target keuangan
+
+   Komponen:
+   A. Ringkasan Tabungan
+      - Total saldo tabungan
+      - Grafik pertumbuhan (line chart)
+
+   B. Daftar Target (Goals)
+      - Nama target (misal: "Liburan", "iPhone Baru", "Dana Darurat")
+      - Progress bar (persentase tercapai)
+      - Target nominal vs tercapai
+      - Deadline
+      - Tombol "Setor" untuk tambah ke target
+
+   C. Tombol "Buat Target Baru"
+      - Input nama, nominal target, deadline
+      - Pilih ikon & warna
+
+──────────────────────────────────────────────────────────────────────────────
+15. REWARDS PAGE (rewards_page.dart)
+──────────────────────────────────────────────────────────────────────────────
+   Tujuan    : Program loyalitas & poin reward
+
+   Komponen:
+   A. Poin Saya
+      - Total poin saat ini (animasi counter)
+      - Level membership (Silver/Gold/Platinum)
+      - Progress ke level berikutnya
+
+   B. Cara Dapat Poin
+      - Transfer: +10 poin per transaksi
+      - Top Up: +5 poin per transaksi
+      - Bayar Tagihan: +15 poin per transaksi
+      - Daily Check-in: +3 poin per hari
+
+   C. Tukar Poin (Katalog Reward)
+      - Voucher belanja (Tokopedia, Shopee)
+      - Cashback saldo
+      - Diskon merchant
+      - Donasi
+
+──────────────────────────────────────────────────────────────────────────────
+16. NOTIFICATION PAGE (notification_page.dart)
+──────────────────────────────────────────────────────────────────────────────
+   Tujuan    : Pusat notifikasi & pemberitahuan
+
+   Kategori:
+   - 💰 Transaksi (transfer masuk/keluar, top up berhasil)
+   - 🎁 Promo (cashback, diskon, event)
+   - 🔒 Keamanan (login baru, ganti password)
+   - 📢 Info (update app, maintenance)
+
+   Komponen:
+   - Tabs filter kategori
+   - Badge unread (dot merah)
+   - Swipe to delete/mark read
+   - Tombol "Tandai Semua Dibaca"
+
+──────────────────────────────────────────────────────────────────────────────
+17. EDIT PROFILE PAGE (edit_profile_page.dart)
+──────────────────────────────────────────────────────────────────────────────
+   Tujuan    : Mengubah data profil pengguna
+
+   Komponen:
+   - Upload/ganti foto profil (kamera/galeri)
+   - Edit nama lengkap
+   - Edit email
+   - Edit no. handphone
+   - Edit alamat
+   - Edit tanggal lahir
+   - Tombol "Simpan Perubahan"
+
+──────────────────────────────────────────────────────────────────────────────
+18. SECURITY SETTINGS PAGE (security_page.dart)
+──────────────────────────────────────────────────────────────────────────────
+   Tujuan    : Pengaturan keamanan akun
+
+   Komponen:
+   - Ganti Password
+   - Ganti PIN Transaksi
+   - Toggle Biometrik (Fingerprint / Face ID)
+   - Toggle 2FA (Two-Factor Authentication)
+   - Daftar Perangkat Aktif (device management)
+   - Tombol "Keluar dari Semua Perangkat"
+   - Riwayat Login (tanggal, waktu, perangkat, lokasi)
+
+──────────────────────────────────────────────────────────────────────────────
+19. RECEIPT PAGE (receipt_page.dart)
+──────────────────────────────────────────────────────────────────────────────
+   Tujuan    : Struk digital transaksi
+
+   Komponen:
+   - Header "PayFlow" + logo
+   - Status transaksi (Berhasil / Gagal / Pending)
+   - No. Referensi (unik)
+   - Detail: tipe, penerima, nominal, biaya admin, total
+   - Tanggal & waktu transaksi
+   - Tombol "Bagikan" (share ke WhatsApp/dll)
+   - Tombol "Download PDF"
+   - Tombol "Kembali ke Home"
+
+──────────────────────────────────────────────────────────────────────────────
+20. STATISTICS PAGE (statistics_page.dart)
+──────────────────────────────────────────────────────────────────────────────
+   Tujuan    : Analisis & laporan keuangan
+
+   Komponen:
+   A. Ringkasan Bulanan
+      - Total pemasukan vs pengeluaran
+      - Selisih (surplus/defisit)
+      - Perbandingan bulan lalu (persentase)
+
+   B. Grafik
+      - Bar chart pengeluaran per kategori
+      - Line chart tren bulanan (6 bulan terakhir)
+      - Pie chart distribusi pengeluaran
+
+   C. Insight Otomatis
+      - "Pengeluaran kamu naik 15% bulan ini"
+      - "Kategori terbesar: Tagihan (40%)"
+      - Tips menghemat
+
+──────────────────────────────────────────────────────────────────────────────
+21. CONTACT LIST PAGE (contact_page.dart)
+──────────────────────────────────────────────────────────────────────────────
+   Tujuan    : Kelola daftar kontak favorit & penerima
+
+   Komponen:
+   - Search bar
+   - Tab "Favorit" / "Semua" / "Terakhir"
+   - Daftar kontak (avatar, nama, nomor)
+   - Tombol tambah kontak baru
+   - Swipe untuk hapus / tandai favorit
+   - Tap untuk langsung transfer
+
+──────────────────────────────────────────────────────────────────────────────
+22. VOUCHER & PROMO PAGE (voucher_page.dart)
+──────────────────────────────────────────────────────────────────────────────
+   Tujuan    : Kumpulan voucher & promo aktif
+
+   Komponen:
+   - Banner promo (carousel/slider)
+   - Tab: "Tersedia" / "Digunakan" / "Kedaluwarsa"
+   - Kartu voucher:
+     • Nama promo & deskripsi
+     • Kode voucher (tap to copy)
+     • Masa berlaku
+     • Syarat & ketentuan
+     • Tombol "Gunakan"
+   - Input kode voucher manual
+
+──────────────────────────────────────────────────────────────────────────────
+23. HELP & SUPPORT PAGE (help_page.dart)
+──────────────────────────────────────────────────────────────────────────────
+   Tujuan    : Bantuan & layanan pelanggan
+
+   Komponen:
+   - Search FAQ
+   - Kategori FAQ (Akun, Transaksi, Keamanan, dll.)
+   - Daftar pertanyaan + jawaban (expandable)
+   - Live Chat (floating button)
+   - Hubungi CS: Telepon, Email, WhatsApp
+   - Formulir Pengaduan / Keluhan
+   - Panduan Penggunaan Aplikasi
+
+──────────────────────────────────────────────────────────────────────────────
+24. ABOUT PAGE (about_page.dart)
+──────────────────────────────────────────────────────────────────────────────
+   Tujuan    : Informasi tentang aplikasi
+
+   Komponen:
+   - Logo & nama aplikasi
+   - Versi aplikasi
+   - Deskripsi singkat
+   - Lisensi & open source
+   - Syarat & Ketentuan
+   - Kebijakan Privasi
+   - Link media sosial (Instagram, Twitter, dll.)
+   - Tombol "Beri Rating di Play Store"
+
+──────────────────────────────────────────────────────────────────────────────
+25. ONBOARDING PAGE (onboarding_page.dart)
+──────────────────────────────────────────────────────────────────────────────
+   Tujuan    : Panduan fitur saat pertama kali install
+
+   Komponen (3-4 slide):
+   - Slide 1: "Pembayaran Mudah" + ilustrasi
+   - Slide 2: "Transfer Instan" + ilustrasi
+   - Slide 3: "Keamanan Terjamin" + ilustrasi
+   - Slide 4: "Mulai Sekarang!" + tombol "Masuk / Daftar"
+   - Dot indicator aktif
+   - Tombol "Skip" & "Selanjutnya"
+
+
+================================================================================
+📂 STRUKTUR FILE PROJECT (LENGKAP)
+================================================================================
+
+payment/
+├── lib/
+│   ├── main.dart
+│   ├── models/
+│   │   ├── user_model.dart
+│   │   ├── transaction_model.dart
+│   │   ├── contact_model.dart
+│   │   ├── voucher_model.dart
+│   │   └── savings_model.dart
+│   ├── providers/
+│   │   ├── auth_provider.dart
+│   │   ├── balance_provider.dart
+│   │   ├── transaction_provider.dart
+│   │   └── theme_provider.dart
+│   ├── services/
+│   │   ├── api_service.dart
+│   │   ├── auth_service.dart
+│   │   ├── notification_service.dart
+│   │   └── storage_service.dart
+│   ├── utils/
+│   │   ├── constants.dart
+│   │   ├── formatters.dart
+│   │   └── validators.dart
+│   ├── widgets/
+│   │   ├── custom_button.dart
+│   │   ├── custom_input.dart
+│   │   ├── balance_card.dart
+│   │   ├── transaction_tile.dart
+│   │   └── pin_input.dart
+│   └── pages/
+│       ├── splash_screen.dart
+│       ├── onboarding_page.dart
+│       ├── login_page.dart
+│       ├── register_page.dart
+│       ├── pin_page.dart
+│       ├── home_page.dart
+│       ├── transfer_page.dart
+│       ├── topup_page.dart
+│       ├── bill_page.dart
+│       ├── qr_page.dart
+│       ├── ewallet_page.dart
+│       ├── history_page.dart
+│       ├── receipt_page.dart
+│       ├── statistics_page.dart
+│       ├── savings_page.dart
+│       ├── rewards_page.dart
+│       ├── voucher_page.dart
+│       ├── notification_page.dart
+│       ├── contact_page.dart
+│       ├── profile_page.dart
+│       ├── edit_profile_page.dart
+│       ├── security_page.dart
+│       ├── help_page.dart
+│       └── about_page.dart
+├── pubspec.yaml
+├── blueprint.txt
+└── [platform folders]
+
+
+================================================================================
+📦 DEPENDENCIES (LENGKAP)
+================================================================================
+
+Produksi:
+  - flutter SDK
+  - cupertino_icons: ^1.0.8
+  - provider (state management)
+  - shared_preferences (penyimpanan lokal)
+  - fl_chart (grafik & chart)
+  - qr_flutter (generate QR code)
+  - mobile_scanner (scan QR code)
+  - local_auth (biometrik)
+  - intl (format tanggal & mata uang)
+  - share_plus (share struk)
+  - pdf (generate PDF struk)
+  - image_picker (upload foto profil)
+  - flutter_local_notifications (notifikasi)
+  - url_launcher (buka link eksternal)
+  - shimmer (loading skeleton)
+  - lottie (animasi ilustrasi)
+  - smooth_page_indicator (onboarding dots)
+
+Development:
+  - flutter_test SDK
+  - flutter_lints: ^6.0.0
+
+
+================================================================================
+⚠️ STATUS FITUR
+================================================================================
+
+ ✅ v1.0.0 - Sudah Selesai:
+    - Splash screen dengan animasi
+    - Login page (simulasi)
+    - Home page dashboard
+    - Transfer uang (UI + flow)
+    - Top up saldo (UI + flow)
+    - Riwayat transaksi (statis)
+    - Profil pengguna (statis)
+    - Bottom navigation
+    - Dark mode theme
+
+ 🔲 v2.0.0 - Fitur Tambahan Baru:
+    - Registrasi akun
+    - Onboarding (panduan awal)
+    - PIN & Biometrik security
+    - QR Code (scan & tampilkan)
+    - Pembayaran tagihan (8 kategori)
+    - Isi saldo e-wallet
+    - Tabungan & target keuangan
+    - Rewards & poin loyalitas
+    - Voucher & promo
+    - Notifikasi center
+    - Edit profil lengkap
+    - Security settings
+    - Struk digital (share & PDF)
+    - Statistik & laporan keuangan
+    - Kontak favorit
+    - Help & FAQ
+    - About page
+
+
+================================================================================
+🚀 ROADMAP PENGEMBANGAN
+================================================================================
+
+Phase 1 (v1.0) ✅ SELESAI:
+  - UI dasar: Splash, Login, Home, Transfer, Top Up, History, Profile
+
+Phase 2 (v2.0) - Fitur Inti Tambahan:
+  - Registrasi + Onboarding
+  - PIN Security + Biometrik
+  - QR Code payment
+  - Pembayaran tagihan
+  - Struk digital
+
+Phase 3 (v3.0) - Fitur Keuangan:
+  - Tabungan & target keuangan
+  - Statistik & laporan
+  - E-wallet top up
+  - Kontak favorit
+
+Phase 4 (v4.0) - Engagement & Loyalty:
+  - Rewards & poin
+  - Voucher & promo
+  - Notifikasi push
+  - Daily check-in
+
+Phase 5 (v5.0) - Backend & Production:
+  - Integrasi Firebase / REST API
+  - Autentikasi real (email + social login)
+  - Database cloud (Firestore)
+  - State management (Provider/Riverpod)
+  - Enkripsi & sertifikasi keamanan
+
+Phase 6 (v6.0) - Ekspansi:
+  - Multi-bahasa (Indonesia, English)
+  - Dark/Light mode toggle
+  - Integrasi QRIS merchant
+  - Fitur investasi (reksa dana)
+  - Chat & customer support real-time
+  - Accessibility (a11y)
+
+
+================================================================================
+🔒 ARSITEKTUR KEAMANAN
+================================================================================
+
+1. Autentikasi    : Email/Password + Social Login + 2FA
+2. Otorisasi      : PIN 6 digit untuk setiap transaksi
+3. Biometrik      : Fingerprint / Face ID (opsional)
+4. Enkripsi       : AES-256 untuk data sensitif
+5. Token          : JWT dengan refresh token
+6. Session        : Auto-logout setelah 15 menit idle
+7. Device Mgmt    : Daftar perangkat aktif, logout remote
+
+
+================================================================================
+📱 SCREEN FLOW LENGKAP (UPDATED)
+================================================================================
+
+[Install] → Onboarding → Register/Login → PIN Setup
+                                              ↓
+                                        Main Navigation
+                           ┌──────────────┼──────────────┐
+                           ▼              ▼              ▼
+                         Home          History        Profile
+                           │              │              │
+              ┌────┬───┬───┤           Receipt     ┌────┬────┐
+              ▼    ▼   ▼   ▼                       ▼    ▼    ▼
+          Transfer TopUp Bill QR              EditProf Security Help
+              │    │    │   │
+              ▼    ▼    ▼   ▼
+           [PIN Verification] → Receipt → Share/PDF
+
+  Home juga akses ke:
+  → Notifications, Statistics, Savings, Rewards, Voucher, Contacts
+
+
+================================================================================
+                           END OF BLUEPRINT
+================================================================================
