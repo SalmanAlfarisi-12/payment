@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'transfer_page.dart';
 import 'topup_page.dart';
+import '../services/user_session.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -23,8 +24,8 @@ class HomePage extends StatelessWidget {
                     Text('Selamat Datang 👋',
                         style: TextStyle(color: Colors.white54, fontSize: 14)),
                     const SizedBox(height: 4),
-                    const Text('Salman',
-                        style: TextStyle(
+                    Text(UserSession.username,
+                        style: const TextStyle(
                             color: Colors.white,
                             fontSize: 24,
                             fontWeight: FontWeight.bold)),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../services/user_session.dart';
+import 'login_page.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
@@ -28,22 +30,22 @@ class ProfilePage extends StatelessWidget {
                   ),
                 ],
               ),
-              child: const CircleAvatar(
+              child: CircleAvatar(
                 radius: 48,
-                backgroundColor: Color(0xFF1D1F33),
-                child: Text('S',
-                    style: TextStyle(
+                backgroundColor: const Color(0xFF1D1F33),
+                child: Text(UserSession.initial,
+                    style: const TextStyle(
                         color: Color(0xFF6C63FF),
                         fontSize: 36,
                         fontWeight: FontWeight.bold)),
               ),
             ),
             const SizedBox(height: 16),
-            const Text('Salman',
-                style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold)),
+            Text(UserSession.username,
+                style: const TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold)),
             const SizedBox(height: 4),
-            const Text('salman@email.com',
-                style: TextStyle(color: Colors.white54, fontSize: 14)),
+            Text(UserSession.email,
+                style: const TextStyle(color: Colors.white54, fontSize: 14)),
             const SizedBox(height: 6),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
@@ -113,7 +115,15 @@ class ProfilePage extends StatelessWidget {
                           child: const Text('Batal', style: TextStyle(color: Colors.white54)),
                         ),
                         ElevatedButton(
-                          onPressed: () => Navigator.pop(context),
+                          onPressed: () {
+                            UserSession.logout();
+                            Navigator.pop(context);
+                            Navigator.pushAndRemoveUntil(
+                              context,
+                              MaterialPageRoute(builder: (_) => const LoginPage()),
+                              (route) => false,
+                            );
+                          },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: const Color(0xFFFF6B6B),
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),

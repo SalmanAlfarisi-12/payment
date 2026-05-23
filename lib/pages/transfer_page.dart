@@ -17,6 +17,7 @@ class _TransferPageState extends State<TransferPage> {
     {'name': 'Budi Santoso', 'phone': '0856-1234-5678', 'icon': Icons.person},
     {'name': 'Citra Dewi', 'phone': '0878-9012-3456', 'icon': Icons.person},
     {'name': 'Dina Safitri', 'phone': '0813-5678-9012', 'icon': Icons.person},
+    {'name': 'achmad wail',   'phone': '0878-9045-3455', 'icon': Icons.person},
   ];
 
   @override

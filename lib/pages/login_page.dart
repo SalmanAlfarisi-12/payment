@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../main.dart';
+import '../services/user_session.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -57,6 +58,25 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
     setState(() => _isLoading = true);
     await Future.delayed(const Duration(milliseconds: 1500));
     if (mounted) {
+      UserSession.login(emailAddress: _emailController.text);
+      Navigator.pushReplacement(
+        context,
+        PageRouteBuilder(
+          pageBuilder: (_, __, ___) => const MainNavigation(),
+          transitionDuration: const Duration(milliseconds: 600),
+          transitionsBuilder: (_, anim, __, child) {
+            return FadeTransition(opacity: anim, child: child);
+          },
+        ),
+      );
+    }
+  }
+
+  void _doSocialLogin(String fakeEmail) async {
+    setState(() => _isLoading = true);
+    await Future.delayed(const Duration(milliseconds: 1000));
+    if (mounted) {
+      UserSession.login(emailAddress: fakeEmail);
       Navigator.pushReplacement(
         context,
         PageRouteBuilder(
@@ -250,9 +270,23 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
                     // Social Login
                     Row(
                       children: [
-                        Expanded(child: _socialButton(Icons.g_mobiledata_rounded, 'Google', const Color(0xFFFF5252))),
+                        Expanded(
+                          child: _socialButton(
+                            Icons.g_mobiledata_rounded,
+                            'Google',
+                            const Color(0xFFFF5252),
+                            onTap: () => _doSocialLogin('google.user@gmail.com'),
+                          ),
+                        ),
                         const SizedBox(width: 12),
-                        Expanded(child: _socialButton(Icons.facebook_rounded, 'Facebook', const Color(0xFF1877F2))),
+                        Expanded(
+                          child: _socialButton(
+                            Icons.facebook_rounded,
+                            'Facebook',
+                            const Color(0xFF1877F2),
+                            onTap: () => _doSocialLogin('facebook.user@gmail.com'),
+                          ),
+                        ),
                       ],
                     ),
 
@@ -288,7 +322,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
     );
   }
 
-  Widget _socialButton(IconData icon, String label, Color color) {
+  Widget _socialButton(IconData icon, String label, Color color, {required VoidCallback onTap}) {
     return Container(
       height: 52,
       decoration: BoxDecoration(
@@ -300,7 +334,7 @@ class _LoginPageState extends State<LoginPage> with SingleTickerProviderStateMix
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(14),
-          onTap: () {},
+          onTap: _isLoading ? null : onTap,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
